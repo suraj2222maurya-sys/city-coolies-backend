@@ -1,40 +1,41 @@
 # City Coolies Backend
 
-This is the standalone Node.js + TypeScript backend extracted from the City Coolies Next.js project.
+This repository is the separate Python backend for City Coolies.
 
-## Requirements
+## Repository separation
 
-- Node.js 20 or newer
-- Existing Razorpay, Gmail and Google credentials
+- `city-coolies-service-platform` remains the Next.js frontend repository.
+- `city-coolies-backend` contains backend code only.
+- Do not place Next.js pages, UI components, CSS, frontend assets, or frontend routing code here.
+- Do not place Python backend implementation inside the frontend repository.
 
-## Start locally
+## Current foundation
+
+This repository has been reset to a clean Python/FastAPI foundation.
+The previous Node.js/TypeScript backend is archived in Git history/its safety archive branch and is not part of the new main branch.
+Razorpay/payment backend code is not included.
+
+Frontend behavior such as service navigation, booking UI, blog navigation, `tel:` call links, email links, and WhatsApp links stays in the Next.js frontend.
+
+## Windows setup
 
 ```powershell
 cd C:\Users\user\city-coolies\city-coolies-backend
+python -m venv .venv
+.\.venv\Scripts\Activate.ps1
+python -m pip install --upgrade pip
+pip install -r requirements.txt
 Copy-Item .env.example .env
-npm install
-npm run check
-npm run dev
+python -m uvicorn app.main:app --host 127.0.0.1 --port 8000 --reload
 ```
 
-Open `http://localhost:4000/health`. It should return JSON with `"ok": true`.
+Health checks:
 
-## Important safety rule
+- `http://127.0.0.1:8000/health`
+- `http://127.0.0.1:8000/api/health`
 
-Do not delete `src/app/api` from the frontend yet. First configure credentials, test every endpoint on this backend, then switch the frontend to this server. Remove the old Next.js API routes only after the final parity test.
+Development API docs:
 
-## Migrated endpoints
+- `http://127.0.0.1:8000/docs`
 
-- `POST /api/bookings`
-- `POST /api/careers/apply`
-- `GET /api/google-rating`
-- `POST /api/packers-movers/bookings`
-- `POST /api/packers-movers/payments/create-order`
-- `POST /api/payments/create-order`
-- `POST /api/payments/verify`
-- `POST /api/quote-requests`
-- `POST /api/service-offers/home-services`
-- `POST /api/vendor-membership/payment/create-order`
-- `POST /api/vendor-membership/payment/verify`
-
-The response formats and validation logic are preserved from the current Next.js API handlers.
+Payment integrations will only be added later if explicitly required.

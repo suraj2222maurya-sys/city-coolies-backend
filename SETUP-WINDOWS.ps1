@@ -1,19 +1,16 @@
 $ErrorActionPreference = "Stop"
-Set-StrictMode -Version Latest
+Set-Location $PSScriptRoot
 
-$BackendRoot = Split-Path -Parent $MyInvocation.MyCommand.Path
-Set-Location $BackendRoot
-
-if (-not (Test-Path -LiteralPath ".env")) {
-  Copy-Item -LiteralPath ".env.example" -Destination ".env"
-  Write-Host "Created .env from .env.example."
-  Write-Host "Add your existing Razorpay, Gmail and Google credentials before testing live integrations."
+if (-not (Test-Path ".venv")) {
+    python -m venv .venv
 }
 
-npm install
-npm run check
+& ".\.venv\Scripts\python.exe" -m pip install --upgrade pip
+& ".\.venv\Scripts\python.exe" -m pip install -r requirements.txt
 
-Write-Host ""
-Write-Host "Backend setup and build completed successfully."
-Write-Host "Run: npm run dev"
-Write-Host "Then open: http://localhost:4000/health"
+if (-not (Test-Path ".env")) {
+    Copy-Item ".env.example" ".env"
+}
+
+Write-Host "City Coolies Python backend environment is ready."
+Write-Host "Run: .\.venv\Scripts\python.exe -m uvicorn app.main:app --host 127.0.0.1 --port 8000 --reload"
