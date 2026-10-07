@@ -1,1 +1,0 @@
-"""City Coolies backend application package."""
