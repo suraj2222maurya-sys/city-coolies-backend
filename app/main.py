@@ -47,3 +47,6 @@ def backend_status():
         "docs": "/docs",
         "health": "/health",
     }
+from app.api.routes.account_auth import router as customer_router, init_db as init_customer_db
+init_customer_db()
+app.include_router(customer_router)

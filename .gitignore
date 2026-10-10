@@ -8,3 +8,11 @@ __pycache__/
 data/auth.db
 data/*.db
 .pytest_cache/
+venv/
+.mypy_cache/
+data/
+*.db
+*.sqlite
+*.sqlite3
+*backup*/
+*BACKUP*/
