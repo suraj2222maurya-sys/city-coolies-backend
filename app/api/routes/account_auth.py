@@ -170,7 +170,7 @@ def issue_session(con, row, response):
     settings = get_settings()
     token = secrets.token_urlsafe(48)
     con.execute('INSERT INTO customer_sessions(token_hash,customer_id,session_version,expires_at,created_at) VALUES(?,?,?,?,?)', (hashlib.sha256(token.encode()).hexdigest(),row['id'],row['session_version'],now()+settings.session_days*86400,now()))
-    response.set_cookie(settings.session_cookie_name, token, httponly=True, secure=settings.cookie_secure, samesite='lax', max_age=settings.session_days*86400, path='/')
+    response.set_cookie(settings.session_cookie_name, token, httponly=True, secure=settings.cookie_secure, samesite=settings.session_cookie_samesite, max_age=settings.session_days*86400, path='/')
     return {'authenticated': True, 'user': {'channel':row['channel'], 'identifier':('+' if row['channel']=='phone' else '')+row['identifier']}}
 
 def session_user(request):
@@ -313,5 +313,5 @@ def account_logout(request: Request, response: Response):
         with db() as con:
             con.execute('DELETE FROM customer_sessions WHERE token_hash=?',(hashlib.sha256(token.encode()).hexdigest(),))
             con.commit()
-    response.delete_cookie(get_settings().session_cookie_name,path='/',secure=get_settings().cookie_secure,samesite='lax')
+    response.delete_cookie(get_settings().session_cookie_name,path='/',secure=get_settings().cookie_secure,samesite=get_settings().session_cookie_samesite)
     return {'logged_out':True}

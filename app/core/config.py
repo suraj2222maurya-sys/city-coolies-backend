@@ -12,7 +12,9 @@ class Settings(BaseSettings):
 
     frontend_origins: str = (
         "http://localhost:3000,"
-        "http://127.0.0.1:3000"
+        "http://127.0.0.1:3000,"
+        "https://citycoolies.com,"
+        "https://www.citycoolies.com"
     )
 
     auth_secret: str = ""
@@ -20,6 +22,7 @@ class Settings(BaseSettings):
     session_cookie_name: str = "city_coolies_session"
     session_days: int = 30
     cookie_secure: bool = False
+    session_cookie_samesite: str = "lax"
 
     otp_ttl_seconds: int = 600
     otp_resend_seconds: int = 60
