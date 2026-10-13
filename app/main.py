@@ -1,4 +1,4 @@
-from fastapi import FastAPI
+﻿from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
 from app.api.routes.auth import (
@@ -31,6 +31,16 @@ def warm_gmail_connection_on_startup():
     warm_email_connection()
 
 
+
+@app.get("/")
+def root_status():
+    return {
+        "status": "ok",
+        "service": "city-coolies-backend",
+        "message": "City Coolies backend is running",
+        "docs": "/docs",
+        "health": "/health",
+    }
 @app.get("/health")
 def health_check():
     return {
@@ -50,3 +60,4 @@ def backend_status():
 from app.api.routes.account_auth import router as customer_router, init_db as init_customer_db
 init_customer_db()
 app.include_router(customer_router)
+
